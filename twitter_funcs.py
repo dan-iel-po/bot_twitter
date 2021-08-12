@@ -30,13 +30,13 @@ def recupera_tweet(id):
 def tweet(status):
     r_dict = {'status': status}
 
-    r = requests.post("https://api.twitter.com/1.1/statuses/update.json", params=r_dict, auth=auth())
+    r = requests.post("https://api.twitter.com/1.1/statuses/update.json", params=r_dict, auth=auth_consumer())
 
     return r
 
 def testa_auth():
     r = 'https://api.twitter.com/1.1/account/verify_credentials.json'
-    r = requests.get(r, auth=auth())
+    r = requests.get(r, auth=auth_consumer())
 
     return r
 
