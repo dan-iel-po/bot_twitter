@@ -40,9 +40,7 @@ def testa_auth():
 
     return r
 
-def main():
-    r = recupera_tweet('1425085264574222346')
-    print(r.text)
+#def main():
 
-if(__name__ == "__main__"):
-    main()
+#if(__name__ == "__main__"):
+    #main()
