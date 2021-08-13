@@ -27,9 +27,6 @@ def webhook():
             'response_token': f'sha256={base64.b64encode(sha256_hash_digest)}'
         }
 
-        return json.dumps(r)
+        return json.dumps(r), 'success', 200
     else:
         abort(400)
-
-
-app.run(debug=True)
