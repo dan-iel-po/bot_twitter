@@ -20,11 +20,11 @@ def webhook():
         return 'success', 200
     elif (request.method == 'GET'):
         consumer_secret_bytes = consumer_api_pass.encode('utf-8')
-        crc_token_bytes = request.args.get('crc_token'.encode('utf-8'))
-        sha256_hash_digest = hmac.new(consumer_secret_bytes, msg=crc_token_bytes, digestmod=hashlib.sha256).digest()
+        crc_token_bytes = request.args.get('crc_token').encode('utf-8')
+        sha256_hash_digest = hmac.new(consumer_secret_bytes, crc_token_bytes, hashlib.sha256).digest()
 
         r = {
-            'response_token': f'sha256={base64.b64encode(sha256_hash_digest)}'
+            'response_token': f'sha256={base64.b64encode(sha256_hash_digest).decode()}'
         }
 
         return json.dumps(r)

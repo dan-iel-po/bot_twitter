@@ -1,4 +1,5 @@
 import requests
+import urllib.parse
 from requests_oauthlib import OAuth1
 import oauth
 
@@ -40,7 +41,14 @@ def testa_auth():
 
     return r
 
-#def main():
+def main():
+    url = 'https://animalsender.pythonanywhere.com/twitter/webhook'
+    url_test = 'http://127.0.0.1:5000/twitter/webhook'
+    tt_url = 'https://api.twitter.com/1.1/account_activity/all/deve/webhooks.json'
+    r_dict = {'crc_token' : 'foo'}
+    r = requests.get(url_test, params=r_dict)
+    print(r.url)
+    print(r.text)
 
-#if(__name__ == "__main__"):
-    #main()
+if(__name__ == "__main__"):
+    main()
