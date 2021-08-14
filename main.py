@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, abort
 from oauth import consumer_api_pass
+from twitter_funcs import manda_dm
 import base64
 import hashlib
 import hmac
@@ -16,7 +17,14 @@ def index():
 @app.route('/twitter/webhook', methods=['POST', 'GET'])
 def webhook():
     if (request.method == 'POST'):
-        print(request.json)
+        data = request.json
+        if 'direct_message_events' in data:
+            user_id = data['direct_message_events'][0]['message_create']['sender_id']
+            msg_data = data['direct_message_events'][0]['message_create']['message_data']['text']
+
+            if 'oi' in msg_data:
+                manda_dm(user_id, 'Olá!')
+
         return 'success', 200
     elif (request.method == 'GET'):
         consumer_secret_bytes = consumer_api_pass.encode('utf-8')
@@ -30,3 +38,5 @@ def webhook():
         return json.dumps(r)
     else:
         abort(400)
+
+app.run(debug=True)

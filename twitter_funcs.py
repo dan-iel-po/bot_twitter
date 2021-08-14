@@ -3,18 +3,20 @@ import urllib.parse
 from requests_oauthlib import OAuth1
 import oauth
 
+# url = 'https://animalsender.pythonanywhere.com/twitter/webhook'
+
 def auth_consumer():
     auth = OAuth1(oauth.consumer_api_key, oauth.consumer_api_pass, oauth.access_token, oauth.access_token_secret)
     return auth
 
 def auth_bearer():
-    auth = OAuth1(oauth.bearer_token)
+    auth = f'Bearer {oauth.bearer_token}'
     return auth
 
-def manda_dm(id_remetente, msg):
+def manda_dm(id_destinatario, msg):
     r_dict = {'event':
                   {'type': 'message_create',
-                  'message_create': {'target': {'recipient_id': id_remetente},
+                  'message_create': {'target': {'recipient_id': id_destinatario},
                   'message_data': {'text' : msg}}}}
 
     r = requests.post("https://api.twitter.com/1.1/direct_messages/events/new.json", json=r_dict, auth=auth_consumer())
@@ -41,14 +43,14 @@ def testa_auth():
 
     return r
 
-def main():
-    url = 'https://animalsender.pythonanywhere.com/twitter/webhook'
-    url_test = 'http://127.0.0.1:5000/twitter/webhook'
-    tt_url = 'https://api.twitter.com/1.1/account_activity/all/deve/webhooks.json'
-    r_dict = {'crc_token' : 'foo'}
-    r = requests.get(url_test, params=r_dict)
-    print(r.url)
-    print(r.text)
+#def main():
+    #url = 'http://127.0.0.1:5000/twitter/webhook'
+    #r_dict = {'for_user_id': '734896788130402304',
+    #          'direct_message_events': [{'type': 'message_create', 'id': '1426293441634480132', 'created_timestamp': '1628889830393',
+    #                                    'message_create': {'target': {'recipient_id': '734896788130402304'}, 'sender_id': '1397372028638961667',
+    #                                                       'message_data': {'text': 'oiii'}}}]}
 
-if(__name__ == "__main__"):
-    main()
+    #r = requests.post(url, json=r_dict)
+
+#if(__name__ == "__main__"):
+#    main()
