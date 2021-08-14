@@ -38,5 +38,3 @@ def webhook():
         return json.dumps(r)
     else:
         abort(400)
-
-app.run(debug=True)
