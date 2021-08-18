@@ -1,16 +1,16 @@
 import requests
 import urllib.parse
 from requests_oauthlib import OAuth1
-import oauth
+import auth
 
 # url = 'https://animalsender.pythonanywhere.com/twitter/webhook'
 
 def auth_consumer():
-    auth = OAuth1(oauth.consumer_api_key, oauth.consumer_api_pass, oauth.access_token, oauth.access_token_secret)
+    auth = OAuth1(auth.consumer_api_key, auth.consumer_api_pass, auth.access_token, auth.access_token_secret)
     return auth
 
 def auth_bearer():
-    auth = f'Bearer {oauth.bearer_token}'
+    auth = f'Bearer {auth.bearer_token}'
     return auth
 
 def manda_dm(id_destinatario, msg):

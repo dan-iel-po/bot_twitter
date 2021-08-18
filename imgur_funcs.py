@@ -1,7 +1,7 @@
 import requests
 import random
 from requests.auth import HTTPBasicAuth
-from oauth import img_client_id, img_client_secret
+from auth import img_client_id, img_client_secret
 
 dog = ('dogs',
        'corgi',

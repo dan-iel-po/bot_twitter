@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, abort
-from oauth import consumer_api_pass
+from auth import consumer_api_pass
 from twitter_funcs import manda_dm
 import base64
 import hashlib
