@@ -24,7 +24,7 @@ cat = ('blep',
 
 def get_imglink(subject):
     sort = 'time'
-    window = 'day'
+    window = 'week'
     page = 0
     headers = {'Authorization' : f'Client-ID {img_client_id}'}
 

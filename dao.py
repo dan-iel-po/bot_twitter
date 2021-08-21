@@ -1,4 +1,5 @@
 import random
+from sqlalchemy.pool import NullPool
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
@@ -6,9 +7,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from auth import mysql_user, mysql_pass, mysql_host, mysql_port
 from imgur_funcs import get_imglink, dog, cat
 
-db = 'imgs_links'
+db = 'animalsender$default'
 
-engine = create_engine(f"mysql+pymysql://{mysql_user}:{mysql_pass}@{mysql_host}:{mysql_port}/{db}", echo=True)
+engine = create_engine(f"mysql+pymysql://{mysql_user}:{mysql_pass}@{mysql_host}:{mysql_port}/{db}", poolclass=NullPool, echo=True)
 
 Base = declarative_base()
 
@@ -40,7 +41,7 @@ def reset_db():
     Session.configure(bind=engine)
     session = Session()
 
-    for x in range(0, 5):
+    for x in range(0, 100):
         dog_link = get_imglink(dog)
         cat_link = get_imglink(cat)
 
@@ -70,7 +71,7 @@ def get_rand_cat():
     query = session.query(Imgs_cat).all()
     rand_id = random.randrange(1, len(query) + 1)
 
-    return session.get(Imgs_dog, rand_id).link
+    return session.get(Imgs_cat, rand_id).link
 
 def main():
     reset_db()

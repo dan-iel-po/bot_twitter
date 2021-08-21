@@ -1,9 +1,10 @@
 import requests
-import urllib.parse
 import sys
 from requests_oauthlib import OAuth1
 import auth
 import os
+
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 # url = 'https://animalsender.pythonanywhere.com/twitter/webhook'
 
@@ -12,13 +13,13 @@ def auth_consumer():
     return authentication
 
 def auth_bearer():
-    auth = f'Bearer {auth.bearer_token}'
-    return auth
+    authentication = f'Bearer {auth.bearer_token}'
+    return authentication
 
-def upload_imagem(media):
+def upload_imagem(media, id_destinatario):
     upload_url = 'https://upload.twitter.com/1.1/media/upload.json'
 
-    file = f'temp/{media}'
+    file = os.path.join(THIS_FOLDER, f'temp/{media}')
     bytes = os.path.getsize(file)
 
     r_dict_init = {'command': 'INIT',
@@ -27,6 +28,12 @@ def upload_imagem(media):
               'media_category': 'dm_image'}
 
     r = requests.post(upload_url, params=r_dict_init, auth=auth_consumer())
+
+    print(r.json())
+
+    if 'media_id_string' not in r.json():
+        manda_dm(id_destinatario, 'Opa patrão, catei um link zikado, faça seu pedido novamente nmrlzinha')
+
 
     media_id = r.json()['media_id_string']
 
@@ -66,18 +73,28 @@ def upload_append(file, media_id, total_bytes, upload_url):
 
     f.close()
 
-def manda_dm(id_destinatario, msg=None, media=None):
+def manda_dm_media(id_destinatario, msg=None, media=None):
 
     media_id = ''
 
     if (media != None):
-        media_id = upload_imagem(media)
+        media_id = upload_imagem(media, id_destinatario)
 
     r_dict = {'event':
                   {'type': 'message_create',
                   'message_create': {'target': {'recipient_id': id_destinatario},
                   'message_data': {
                       'text' : msg, 'attachment': {'type': 'media', 'media': {'id': media_id}}}}}}
+
+    r = requests.post("https://api.twitter.com/1.1/direct_messages/events/new.json", json=r_dict, auth=auth_consumer())
+
+def manda_dm(id_destinatario, msg=None):
+
+    r_dict = {'event':
+                  {'type': 'message_create',
+                  'message_create': {'target': {'recipient_id': id_destinatario},
+                  'message_data': {
+                      'text' : msg,}}}}
 
     r = requests.post("https://api.twitter.com/1.1/direct_messages/events/new.json", json=r_dict, auth=auth_consumer())
 

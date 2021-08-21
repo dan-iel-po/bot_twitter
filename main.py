@@ -1,13 +1,15 @@
 from flask import Flask, request, render_template, abort
 from auth import consumer_api_pass
-from twitter_funcs import manda_dm
-from dao import get_rand_dog, get_rand_cat
+from twitter_funcs import manda_dm_media, manda_dm
+from imgur_funcs import get_imglink, dog, cat
+import os
 import requests
 import base64
 import hashlib
 import hmac
 import json
 
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
 
@@ -16,40 +18,36 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/test', methods=['GET', ])
-def test():
-    msg = request.args.get('msg')
-
 @app.route('/twitter/webhook', methods=['POST', 'GET'])
 def webhook():
     if (request.method == 'POST'):
         data = request.json
         if 'direct_message_events' in data:
             user_id = data['direct_message_events'][0]['message_create']['sender_id']
-            msg_data = data['direct_message_events'][0]['message_create']['message_data']['text']
+            msg_data = data['direct_message_events'][0]['message_create']['message_data']['text'].lower()
 
             if 'oi' in msg_data:
                 manda_dm(user_id, 'Olá!')
 
             if 'cachorro' in msg_data:
-                dog_link = get_rand_dog()
+                dog_link = get_imglink(dog)
 
                 img = requests.get(dog_link)
 
-                with open('temp/dog.png', 'wb') as f:
+                with open(os.path.join(THIS_FOLDER, 'temp/dog.png'), 'wb') as f:
                     f.write(img.content)
 
-                manda_dm(user_id, '', 'temp/dog.png')
+                manda_dm_media(user_id, '', 'dog.png')
 
             if 'gato' in msg_data:
-                cat_link = get_rand_cat()
+                cat_link = get_imglink(cat)
 
                 img = requests.get(cat_link)
 
-                with open('temp/dog.png', 'wb') as f:
+                with open(os.path.join(THIS_FOLDER, 'temp/cat.png'), 'wb') as f:
                     f.write(img.content)
 
-                manda_dm(user_id, '', 'temp/cat.png')
+                manda_dm_media(user_id, '', 'cat.png')
 
         return 'success', 200
     elif (request.method == 'GET'):
@@ -64,5 +62,3 @@ def webhook():
         return json.dumps(r)
     else:
         abort(400)
-
-app.run(debug=True)
