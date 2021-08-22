@@ -65,6 +65,7 @@ class Bot():
         self.twt.manda_dm(msg)
 
     class Imgur():
+        __gallery_endpoint = 'https://api.imgur.com/3/gallery/r/'
 
         #pega uma img aleatória pelo link,
         #o subject é um tuple com vários subreddits de um determinado assunto
@@ -74,7 +75,7 @@ class Bot():
             page = 0
 
             rand_sub = random.randrange(0, 8)
-            r = requests.get(f"https://api.imgur.com/3/gallery/r/{subject[rand_sub]}/{sort}/{window}/{page}", headers=img_auth)
+            r = requests.get(f"{self.__gallery_endpoint}{subject[rand_sub]}/{sort}/{window}/{page}", headers=img_auth)
             data = r.json()
 
             rand_link = random.randrange(1, 101)
