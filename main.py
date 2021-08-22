@@ -40,4 +40,4 @@ def webhook():
     else:
         abort(400)
 
-app.run(debug=True)
+#app.run(debug=True)
