@@ -1,5 +1,5 @@
 # Onde testa-lo
-para testar o bot tudo que é preciso e mandar um dos comandos descritos abaixos na minha dm, neste link:https://twitter.com/Dan_ielPo (não precisa ter vergonha!)
+para testar o bot tudo que é preciso é mandar um dos comandos descritos abaixos na minha dm, neste link: https://twitter.com/Dan_ielPo (não precisa ter vergonha!)
 
 # Comandos
 
@@ -11,7 +11,7 @@ para testar o bot tudo que é preciso e mandar um dos comandos descritos abaixos
 
 # Bugs conhecidos
 
--O bot procura imgs em subreddits, sem checar se na foto há de fato um cachorro ou um gato, por isso eventualmente ele manda fotos de memes ou de outros animais
+-O bot procura imgs em subreddits, sem checar se na foto há de fato um cachorro ou um gato, por isso, eventualmente ele manda fotos de memes ou de outros animais
 
 -As vezes o bot pega links quebrados do Imgur, nesse caso, ele irá mandar um aviso e é só tentar o comando novamente!
 
